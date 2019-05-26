@@ -15,7 +15,7 @@ class Register(Resource):
         self.reqparse.add_argument(
             'username',
             required=True,
-            help='No username provided'
+            help='No username provided',
             location=['form', 'json']
         )
         self.reqparse.add_argument(

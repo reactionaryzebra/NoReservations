@@ -1,6 +1,7 @@
 from flask import Flask, g
 from resources.users import users_api
 import config
+import models
 
 
 
