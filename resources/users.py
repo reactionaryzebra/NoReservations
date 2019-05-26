@@ -71,6 +71,11 @@ class Login(Resource):
             login_user(user)
             return marshal(user, user_fields), 200
 
+class Logout(Resource):
+    def post(self):
+        logout_user()
+        return 200
+
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
 api.add_resource(
@@ -80,4 +85,8 @@ api.add_resource(
 api.add_resource(
     Login,
     '/login'
+)
+api.add_resource(
+    Logout,
+    '/logout'
 )

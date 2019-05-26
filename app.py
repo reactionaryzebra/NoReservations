@@ -14,6 +14,14 @@ app.secret_key = config.SECRET_KEY
 
 login_manager.init_app(app)
 
+
+@login_manager.user_loader
+def load_user(userid):
+    try:
+        return models.User.get(models.User.id == userid)
+    except models.DoesNotExist:
+        return None
+
 app.register_blueprint(users_api, url_prefix='/users')
 
 @app.before_request
