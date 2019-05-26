@@ -38,6 +38,12 @@ class User(UserMixin, Model):
             else:
                 raise Exception('Incorrect password')
 
+class Restaurant(Model):
+    name=CharField()
+    neighborhood=CharField()
+    cuisine=CharField()
+    url=CharField()
+    image_url=CharField()
 
 def initialize():
     DATABASE.connect()
