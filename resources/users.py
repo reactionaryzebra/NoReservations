@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint
+from flask import jsonify, Blueprint
 from flask_restful import (Resource, Api, reqparse, inputs, fields, marshal, marshal_with, url_for)
 from flask_login import login_user, logout_user, login_required, current_user
 import models
@@ -40,7 +40,13 @@ class Register(Resource):
 
     def post(self):
         args = self.reqparse.parse_args()
-        print(args)
+        if args['password'] == args['verify_password']:
+            user = models.User.create_user(**args)
+            login_user(user)
+            return marshal(user, user_fields), 201
+        return jsonify({
+            'error': 'Passwords do not match'
+        })
 
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)

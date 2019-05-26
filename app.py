@@ -1,14 +1,18 @@
 from flask import Flask, g
+from flask_login import LoginManager
 from resources.users import users_api
 import config
 import models
 
-
+login_manager = LoginManager()
 
 port = config.PORT
 debug = config.DEBUG
 
 app = Flask(__name__)
+app.secret_key = config.SECRET_KEY
+
+login_manager.init_app(app)
 
 app.register_blueprint(users_api, url_prefix='/users')
 
