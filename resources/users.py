@@ -48,9 +48,36 @@ class Register(Resource):
             'error': 'Passwords do not match'
         })
 
+class Login(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument(
+            'email',
+            required=True,
+            help='No email provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'password',
+            required=True,
+            help='No password provided',
+            location=['form', 'json']
+        )
+
+    def post(self):
+        args = self.reqparse.parse_args()
+        user = models.User.verify_user(**args)
+        if user:
+            login_user(user)
+            return marshal(user, user_fields), 200
+
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
 api.add_resource(
     Register,
     '/registration'
+)
+api.add_resource(
+    Login,
+    '/login'
 )
