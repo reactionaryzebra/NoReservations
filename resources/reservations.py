@@ -1,20 +1,22 @@
 import json
 import models
+from resources.restaurants import restaurant_fields
+from resources.users import user_fields
 from peewee import *
 from flask import jsonify, Blueprint, abort
 from flask_restful import (Resource, Api, reqparse,
                            inputs, fields, marshal, marshal_with, url_for)
 
 reservation_fields = {
-    'restaurant_id': fields.Integer,
-    'seller_id': fields.Integer,
-    'current_owner_id': fields.Integer,
+    'restaurant_id': fields.Nested(restaurant_fields),
+    'seller_id': fields.Nested(user_fields),
+    'current_owner_id': fields.Nested(user_fields),
     'party_size': fields.Integer,
-    'price': fields.Price,
-    'time': fields.DateTime,
-    'date': fields.DateTime,
-    'closed': fields.Boolean,
-    'sold': fields.Boolean
+    'price': fields.Price(2),
+    'time': fields.String,
+    'date': fields.String,
+    'is_closed': fields.Boolean,
+    'is_sold': fields.Boolean
 }
 
 
@@ -25,11 +27,44 @@ class Reservation_List(Resource):
             'restaurant_id',
             required=True,
             help='No restaurant ID provided',
+            location=['json', 'args']
+        )
+        self.reqparse.add_argument(
+            'seller_id',
+            required=False,
+            help='No seller ID provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'party_size',
+            required=False,
+            help='No party size provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'price',
+            required=False,
+            help='No price provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'time',
+            required=False,
+            help='No time provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'date',
+            required=False,
+            help='No date provided',
+            location=['form', 'json']
         )
 
-    def get(self, restaurant_id):
-        reservations = models.Reservation.select().where((models.Reservation.restaurant_id == restaurant_id)
-                                                         & (models.Reservation.is_closed == False) & (models.Reservation.is_sold == False))
+    def get(self):
+        args = self.reqparse.parse_args()
+        reservations = models.Reservation.select().where(
+            (models.Reservation.restaurant_id == args['restaurant_id'])
+            & (models.Reservation.is_closed == False) & (models.Reservation.is_sold == False))
         if len(reservations) == 0:
             return jsonify({
                 "message": "There are no available reservations at this restaurant"
@@ -37,7 +72,12 @@ class Reservation_List(Resource):
         else:
             return [marshal(reservation, reservation_fields) for reservation in reservations]
 
+    def post(self):
+        args = self.reqparse.parse_args()
+        reservation = models.Reservation.create_reservation(**args)
+        return marshal(reservation, reservation_fields), 201
+
 
 reservations_api = Blueprint('resources.reservations', __name__)
 api = Api(reservations_api)
-api.add_resource(Reservation_List, '/reservations/<int:restaurant_id>')
+api.add_resource(Reservation_List, '/reservations')

@@ -66,6 +66,13 @@ class Reservation(Model):
     class Meta:
         database = DATABASE
 
+    @classmethod
+    def create_reservation(cls, restaurant_id, seller_id, party_size, price, time, date):
+        reservation = cls(restaurant_id=restaurant_id, seller_id=seller_id,
+                          current_owner_id=seller_id, party_size=party_size, price=price, time=time, date=date)
+        reservation.save()
+        return reservation
+
 
 def initialize():
     DATABASE.connect()
