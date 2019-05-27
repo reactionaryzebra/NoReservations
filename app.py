@@ -2,6 +2,7 @@ from flask import Flask, g
 from flask_login import LoginManager
 from flask_cors import CORS
 from resources.users import users_api
+from resources.restaurants import restaurants_api
 import config
 import models
 
@@ -24,7 +25,9 @@ def load_user(userid):
         return None
 
 CORS(users_api, origins= ["http://localhost:3000"], supports_credentials=True)
+CORS(restaurants_api, origins= ["http://localhost:3000"], supports_credentials=True)
 app.register_blueprint(users_api, url_prefix='/users')
+app.register_blueprint(restaurants_api, url_prefix='/api/v1')
 
 @app.before_request
 def before_request():

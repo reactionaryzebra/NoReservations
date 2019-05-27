@@ -45,7 +45,10 @@ class Restaurant(Model):
     url=CharField()
     image_url=CharField()
 
+    class Meta:
+        database=DATABASE
+
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([User], safe=True)
+    DATABASE.create_tables([User, Restaurant], safe=True)
     DATABASE.close()
