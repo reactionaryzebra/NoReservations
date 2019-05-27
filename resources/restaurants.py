@@ -2,7 +2,8 @@ import json
 import models
 from peewee import *
 from flask import jsonify, Blueprint, abort
-from flask_restful import (Resource, Api, reqparse, inputs, fields, marshal, marshal_with, url_for)
+from flask_restful import (Resource, Api, reqparse,
+                           inputs, fields, marshal, marshal_with, url_for)
 
 restaurant_fields = {
     'id': fields.Integer,
@@ -12,6 +13,7 @@ restaurant_fields = {
     'url': fields.String,
     'image_url': fields.String
 }
+
 
 class Restaurant_List(Resource):
     def __init__(self):
@@ -46,9 +48,11 @@ class Restaurant_List(Resource):
             help='No image url supplied',
             location='json'
         )
+        super().__init__()
 
     def get(self):
-        restaurants = [marshal(restaurant, restaurant_fields) for restaurant in models.Restaurant.select()]
+        restaurants = [marshal(restaurant, restaurant_fields)
+                       for restaurant in models.Restaurant.select()]
         return restaurants
 
     @marshal_with(restaurant_fields)
@@ -56,6 +60,7 @@ class Restaurant_List(Resource):
         args = self.reqparse.parse_args()
         restaurant = models.Restaurant.create(**args)
         return (restaurant, 201)
+
 
 class Single_Restaurant(Resource):
     def __init__(self):
@@ -76,6 +81,7 @@ class Single_Restaurant(Resource):
             raise Exception('No restaurant with that ID')
         else:
             return (restaurant, 200)
+
 
 restaurants_api = Blueprint('resources.restaurants', __name__)
 api = Api(restaurants_api)
