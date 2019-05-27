@@ -54,11 +54,14 @@ class Restaurant(Model):
 class Reservation(Model):
     restaurant_id = ForeignKeyField(Restaurant, related_name="reservations")
     seller_id = ForeignKeyField(User, related_name="seller")
-    current_owner = ForeignKeyField(User, related_name="owner")
+    current_owner_id = ForeignKeyField(
+        User, related_name="owner", default=self.seller_id)
     party_size = IntegerField()
     price = FloatField()
     time = TimeField()
     date = DateField()
+    is_closed = BooleanField(default=False)
+    is_sold = BooleanField(default=False)
 
     class Meta:
         database = DATABASE
