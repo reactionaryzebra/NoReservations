@@ -4,19 +4,20 @@ from flask_login import UserMixin
 
 DATABASE = SqliteDatabase('reservations.sqlite')
 
+
 class User(UserMixin, Model):
-    username=CharField(unique=True)
-    email=CharField(unique=True)
-    password=CharField()
+    username = CharField(unique=True)
+    email = CharField(unique=True)
+    password = CharField()
 
     class Meta:
-        database=DATABASE
+        database = DATABASE
 
     @classmethod
     def create_user(cls, username, email, password, **kwargs):
         email = email.lower()
         try:
-            cls.select().where(cls.email==email).get()
+            cls.select().where(cls.email == email).get()
         except cls.DoesNotExist:
             user = cls(username=username, email=email)
             user.password = generate_password_hash(password)
@@ -29,7 +30,7 @@ class User(UserMixin, Model):
     def verify_user(cls, email, password):
         email = email.lower()
         try:
-            user = cls.select().where(cls.email==email).get()
+            user = cls.select().where(cls.email == email).get()
         except cls.DoesNotExist:
             raise Exception('There is no account with this email address')
         else:
@@ -38,15 +39,30 @@ class User(UserMixin, Model):
             else:
                 raise Exception('Incorrect password')
 
+
 class Restaurant(Model):
-    name=CharField()
-    neighborhood=CharField()
-    cuisine=CharField()
-    url=CharField()
-    image_url=CharField()
+    name = CharField()
+    neighborhood = CharField()
+    cuisine = CharField()
+    url = CharField()
+    image_url = CharField()
 
     class Meta:
-        database=DATABASE
+        database = DATABASE
+
+
+class Reservation(Model):
+    restaurant_id = ForeignKeyField(Restaurant, related_name="reservations")
+    seller_id = ForeignKeyField(User, related_name="seller")
+    current_owner = ForeignKeyField(User, related_name="owner")
+    party_size = IntegerField()
+    price = FloatField()
+    time = TimeField()
+    date = DateField()
+
+    class Meta:
+        database = DATABASE
+
 
 def initialize():
     DATABASE.connect()
