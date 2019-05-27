@@ -55,7 +55,7 @@ class Reservation(Model):
     restaurant_id = ForeignKeyField(Restaurant, related_name="reservations")
     seller_id = ForeignKeyField(User, related_name="seller")
     current_owner_id = ForeignKeyField(
-        User, related_name="owner", default=self.seller_id)
+        User, related_name="owner")
     party_size = IntegerField()
     price = FloatField()
     time = TimeField()
@@ -69,5 +69,5 @@ class Reservation(Model):
 
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([User, Restaurant], safe=True)
+    DATABASE.create_tables([User, Restaurant, Reservation], safe=True)
     DATABASE.close()
