@@ -9,9 +9,9 @@ from flask_restful import (Resource, Api, reqparse,
 
 reservation_fields = {
     'id': fields.Integer,
-    'restaurant_id': fields.Nested(restaurant_fields),
-    'seller_id': fields.Nested(user_fields),
-    'current_owner_id': fields.Nested(user_fields),
+    'restaurant_id': fields.String,
+    'seller_id': fields.String,
+    'current_owner_id': fields.String,
     'party_size': fields.Integer,
     'price': fields.Price(2),
     'time': fields.String,
