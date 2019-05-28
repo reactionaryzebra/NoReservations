@@ -14,7 +14,7 @@ reservation_fields = {
     'current_owner_id': fields.String,
     'party_size': fields.Integer,
     'price': fields.Price(2),
-    'date_time': fields.DateTime(dt_format='iso8601'),
+    'date_time': fields.String,
     'is_closed': fields.Boolean,
     'is_sold': fields.Boolean
 }
