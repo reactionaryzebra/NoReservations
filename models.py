@@ -75,9 +75,18 @@ class Reservation(Model):
 
     @classmethod
     def update_reservation(cls, id, args):
-        print(args)
         cls.set_by_id(id, args)
         return cls.get_by_id(id)
+
+    @classmethod
+    def delete_reservation(cls, id):
+        try:
+            reservation = cls.get_by_id(id)
+        except cls.DoesNotExist:
+            raise Exception('There is no reservation with the given ID')
+        else:
+            reservation.delete_instance()
+            return True
 
 
 def initialize():

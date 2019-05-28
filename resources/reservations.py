@@ -149,6 +149,10 @@ class Single_Reservation(Resource):
                 id, new_args)
             return (updated_reservation, 200)
 
+    def delete(self, id):
+        if models.Reservation.delete_reservation(id):
+            return jsonify({"message": "successfully deleted"})
+
 
 reservations_api = Blueprint('resources.reservations', __name__)
 api = Api(reservations_api)
