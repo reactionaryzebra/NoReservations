@@ -1,6 +1,7 @@
 from peewee import *
 from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from datetime import datetime
 
 DATABASE = SqliteDatabase('reservations.sqlite')
 
@@ -101,6 +102,12 @@ class Reservation(Model):
         else:
             reservation.delete_instance()
             return True
+
+    @classmethod
+    def cleanup_old_reservations(cls):
+        now = datetime.now()
+        query = cls.update(is_closed=True).where(cls.date_time < now)
+        query.execute()
 
 
 def initialize():

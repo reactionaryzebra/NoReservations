@@ -62,6 +62,7 @@ class Reservation_List(Resource):
         super().__init__()
 
     def get(self):
+        models.Reservation.cleanup_old_reservations()
         args = self.reqparse.parse_args()
         reservations = models.Reservation.select().where(
             (models.Reservation.restaurant_id == args['restaurant_id'])
