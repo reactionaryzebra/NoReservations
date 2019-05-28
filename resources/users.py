@@ -139,6 +139,10 @@ class Single_User(Resource):
                 id, new_args)
             return (updated_user, 200)
 
+    def delete(self, id):
+        if models.User.delete_user(id):
+            return jsonify({"message": "successfully deleted"})
+
 
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)

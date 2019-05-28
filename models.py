@@ -44,6 +44,16 @@ class User(UserMixin, Model):
         cls.set_by_id(id, args)
         return cls.get_by_id(id)
 
+    @classmethod
+    def delete_user(cls, id):
+        try:
+            user = cls.get_by_id(id)
+        except cls.DoesNotExist:
+            raise Exception('There is no user with the given ID')
+        else:
+            user.delete_instance()
+            return True
+
 
 class Restaurant(Model):
     name = CharField()
