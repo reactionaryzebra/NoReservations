@@ -62,6 +62,8 @@ class Restaurant(Model):
     cuisine = CharField()
     url = CharField()
     image_url = CharField()
+    address = CharField()
+    phone = CharField()
 
     class Meta:
         database = DATABASE

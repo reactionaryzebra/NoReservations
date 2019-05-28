@@ -11,7 +11,9 @@ restaurant_fields = {
     'neighborhood': fields.String,
     'cuisine': fields.String,
     'url': fields.String,
-    'image_url': fields.String
+    'image_url': fields.String,
+    'address': fields.String,
+    'phone': fields.String
 }
 
 
