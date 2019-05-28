@@ -73,8 +73,7 @@ class Reservation(Model):
         User, related_name="owner")
     party_size = IntegerField()
     price = FloatField()
-    time = TimeField()
-    date = DateField()
+    date_time = DateTimeField()
     is_closed = BooleanField(default=False)
     is_sold = BooleanField(default=False)
 
@@ -82,9 +81,9 @@ class Reservation(Model):
         database = DATABASE
 
     @classmethod
-    def create_reservation(cls, restaurant_id, seller_id, party_size, price, time, date):
+    def create_reservation(cls, restaurant_id, seller_id, party_size, price, date_time, date):
         reservation = cls(restaurant_id=restaurant_id, seller_id=seller_id,
-                          current_owner_id=seller_id, party_size=party_size, price=price, time=time, date=date)
+                          current_owner_id=seller_id, party_size=party_size, price=price, date_time=date_time)
         reservation.save()
         return reservation
 
