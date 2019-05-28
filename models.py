@@ -82,7 +82,7 @@ class Reservation(Model):
         database = DATABASE
 
     @classmethod
-    def create_reservation(cls, restaurant_id, seller_id, party_size, price, date_time, date):
+    def create_reservation(cls, restaurant_id, seller_id, party_size, price, date_time):
         reservation = cls(restaurant_id=restaurant_id, seller_id=seller_id,
                           current_owner_id=seller_id, party_size=party_size, price=price, date_time=date_time)
         reservation.save()

@@ -14,7 +14,7 @@ reservation_fields = {
     'current_owner_id': fields.String,
     'party_size': fields.Integer,
     'price': fields.Price(2),
-    'date_time': fields.DateTime,
+    'date_time': fields.DateTime(dt_format='iso8601'),
     'is_closed': fields.Boolean,
     'is_sold': fields.Boolean
 }
@@ -48,15 +48,9 @@ class Reservation_List(Resource):
             location=['form', 'json']
         )
         self.reqparse.add_argument(
-            'time',
+            'date_time',
             required=False,
             help='No time provided',
-            location=['form', 'json']
-        )
-        self.reqparse.add_argument(
-            'date',
-            required=False,
-            help='No date provided',
             location=['form', 'json']
         )
         super().__init__()
@@ -105,12 +99,7 @@ class Single_Reservation(Resource):
             location=['form', 'json']
         )
         self.reqparse.add_argument(
-            'time',
-            required=False,
-            location=['form', 'json']
-        )
-        self.reqparse.add_argument(
-            'date',
+            'date_time',
             required=False,
             location=['form', 'json']
         )
