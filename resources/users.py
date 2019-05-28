@@ -125,6 +125,20 @@ class Single_User(Resource):
         else:
             return (user, 200)
 
+    @marshal_with(user_fields)
+    def put(self, id):
+        try:
+            user = models.User.get_by_id(id)
+        except models.User.DoesNotExist:
+            raise Exception('There is no user with this ID')
+        else:
+            args = self.reqparse.parse_args()
+            new_args = {key: value for key,
+                        value in args.items() if value is not None}
+            updated_user = models.User.update_user(
+                id, new_args)
+            return (updated_user, 200)
+
 
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)

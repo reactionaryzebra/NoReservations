@@ -39,6 +39,11 @@ class User(UserMixin, Model):
             else:
                 raise Exception('Incorrect password')
 
+    @classmethod
+    def update_user(cls, id, args):
+        cls.set_by_id(id, args)
+        return cls.get_by_id(id)
+
 
 class Restaurant(Model):
     name = CharField()
