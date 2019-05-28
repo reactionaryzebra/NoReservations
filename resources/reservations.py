@@ -135,6 +135,20 @@ class Single_Reservation(Resource):
         else:
             return (reservation, 200)
 
+    @marshal_with(reservation_fields)
+    def put(self, id):
+        try:
+            reservation = models.Reservation.get_by_id(id)
+        except models.Reservation.DoesNotExist:
+            raise Exception('No reservation exists with that ID')
+        else:
+            args = self.reqparse.parse_args()
+            new_args = {key: value for key,
+                        value in args.items() if value is not None}
+            updated_reservation = models.Reservation.update_reservation(
+                id, new_args)
+            return (updated_reservation, 200)
+
 
 reservations_api = Blueprint('resources.reservations', __name__)
 api = Api(reservations_api)

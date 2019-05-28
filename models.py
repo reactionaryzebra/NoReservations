@@ -73,6 +73,12 @@ class Reservation(Model):
         reservation.save()
         return reservation
 
+    @classmethod
+    def update_reservation(cls, id, args):
+        print(args)
+        cls.set_by_id(id, args)
+        return cls.get_by_id(id)
+
 
 def initialize():
     DATABASE.connect()
