@@ -8,7 +8,6 @@ from flask_restful import (Resource, Api, reqparse,
 restaurant_fields = {
     'id': fields.Integer,
     'name': fields.String,
-    'neighborhood': fields.String,
     'cuisine': fields.String,
     'url': fields.String,
     'image_url': fields.String,
@@ -24,12 +23,6 @@ class Restaurant_List(Resource):
             'name',
             required=True,
             help='No name supplied',
-            location='json'
-        )
-        self.reqparse.add_argument(
-            'neighborhood',
-            required=True,
-            help='No neighborhood supplied',
             location='json'
         )
         self.reqparse.add_argument(

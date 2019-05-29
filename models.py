@@ -63,7 +63,6 @@ class User(UserMixin, Model):
 
 class Restaurant(Model):
     name = CharField()
-    neighborhood = CharField()
     cuisine = CharField()
     url = CharField()
     image_url = CharField()

@@ -1,5 +1,7 @@
 import requests
 import config
+from peewee import *
+import models
 
 restaurants = [{
     "name": "Le Comptoir",
@@ -96,4 +98,4 @@ for restaurant in restaurants:
     restaurant['phone'] = parsed_data['businesses'][0]['display_phone']
     restaurant['cuisine'] = parsed_data['businesses'][0]['categories'][0]['title']
 
-print(restaurants)
+models.Restaurant.insert_many(restaurants).execute()
