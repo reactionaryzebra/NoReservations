@@ -29,6 +29,8 @@ def load_user(userid):
 CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
 CORS(restaurants_api, origins=[
      "http://localhost:3000"], supports_credentials=True)
+CORS(reservations_api, origins=[
+     "http://localhost:3000"], supports_credentials=True)
 app.register_blueprint(users_api, url_prefix='/users')
 app.register_blueprint(restaurants_api, url_prefix='/api/v1')
 app.register_blueprint(reservations_api, url_prefix='/api/v1')
