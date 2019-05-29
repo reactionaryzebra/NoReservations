@@ -2,8 +2,13 @@ from peewee import *
 from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
+import config
 
-DATABASE = SqliteDatabase('reservations.sqlite')
+DATABASE = PostgresqlDatabase(
+    'noreservations_dev',
+    user='jrez',
+    password=config.DB_PASSWORD
+)
 
 
 class User(UserMixin, Model):
