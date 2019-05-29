@@ -1,3 +1,6 @@
+import requests
+import config
+
 restaurants = [{
     "name": "Le Comptoir",
     "url": "https://www.lecomptoirla.com/"
@@ -83,3 +86,14 @@ restaurants = [{
     "name": "Hatchet Hall",
     "url": "https://www.hatchethallla.com/"
 }]
+
+for restaurant in restaurants:
+    data = requests.get('https://api.yelp.com/v3/businesses/search?term={term}&location=Los Angeles&limit=1'.format(
+        term=restaurant['name']), headers={"Authorization": "Bearer {}".format(config.YELP_KEY)})
+    parsed_data = data.json()
+    restaurant['image_url'] = parsed_data['businesses'][0]['image_url']
+    restaurant['address'] = parsed_data['businesses'][0]['location']['display_address']
+    restaurant['phone'] = parsed_data['businesses'][0]['display_phone']
+    restaurant['cuisine'] = parsed_data['businesses'][0]['categories'][0]['title']
+
+print(restaurants)
