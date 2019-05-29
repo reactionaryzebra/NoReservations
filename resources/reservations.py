@@ -14,7 +14,8 @@ reservation_fields = {
     'current_owner_id': fields.String,
     'party_size': fields.Integer,
     'price': fields.Price(2),
-    'date_time': fields.String,
+    'date': fields.String,
+    'time': fields.String,
     'is_closed': fields.Boolean,
     'is_sold': fields.Boolean
 }
@@ -54,7 +55,13 @@ class Reservation_List(Resource):
             location=['form', 'json']
         )
         self.reqparse.add_argument(
-            'date_time',
+            'date',
+            required=False,
+            help='No time provided',
+            location=['json', 'args']
+        )
+        self.reqparse.add_argument(
+            'time',
             required=False,
             help='No time provided',
             location=['form', 'json']
@@ -64,7 +71,18 @@ class Reservation_List(Resource):
     def get(self):
         models.Reservation.cleanup_old_reservations()
         args = self.reqparse.parse_args()
-        if args['restaurant_id']:
+        if args['restaurant_id'] and args['date']:
+            reservations = models.Reservation.select().where(
+                (models.Reservation.date == args['date']) &
+                (models.Reservation.restaurant_id == args['restaurant_id'])
+                & (models.Reservation.is_closed == False) & (models.Reservation.is_sold == False))
+            if len(reservations) == 0:
+                return jsonify({
+                    "message": "There are no available reservations at this restaurant"
+                })
+            else:
+                return [marshal(reservation, reservation_fields) for reservation in reservations]
+        elif args['restaurant_id']:
             reservations = models.Reservation.select().where(
                 (models.Reservation.restaurant_id == args['restaurant_id'])
                 & (models.Reservation.is_closed == False) & (models.Reservation.is_sold == False))
@@ -74,12 +92,12 @@ class Reservation_List(Resource):
                 })
             else:
                 return [marshal(reservation, reservation_fields) for reservation in reservations]
-        elif args['user_id']:
-            print(args['user_id'])
-            reservations = models.Reservation.select().where(
-                (models.Reservation.seller_id ==
+        elif args['user_id']
+         print(args['user_id'])
+          reservations = models.Reservation.select().where(
+               (models.Reservation.seller_id ==
                  args['user_id']) | (models.Reservation.current_owner_id == args['user_id']))
-            if len(reservations) == 0:
+           if len(reservations) == 0:
                 return jsonify({"message": "This user has no reservations"})
             else:
                 return [marshal(reservation, reservation_fields) for reservation in reservations]
@@ -117,7 +135,12 @@ class Single_Reservation(Resource):
             location=['form', 'json']
         )
         self.reqparse.add_argument(
-            'date_time',
+            'date',
+            required=False,
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'time',
             required=False,
             location=['form', 'json']
         )

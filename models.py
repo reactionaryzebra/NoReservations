@@ -80,7 +80,8 @@ class Reservation(Model):
         User, related_name="owner")
     party_size = IntegerField()
     price = FloatField()
-    date_time = DateTimeField()
+    date = DateField()
+    time = TimeField()
     is_closed = BooleanField(default=False)
     is_sold = BooleanField(default=False)
 
@@ -88,9 +89,9 @@ class Reservation(Model):
         database = DATABASE
 
     @classmethod
-    def create_reservation(cls, restaurant_id, seller_id, party_size, price, date_time):
+    def create_reservation(cls, restaurant_id, seller_id, party_size, price, date, time):
         reservation = cls(restaurant_id=restaurant_id, seller_id=seller_id,
-                          current_owner_id=seller_id, party_size=party_size, price=price, date_time=date_time)
+                          current_owner_id=seller_id, party_size=party_size, price=price, date=date, time=time)
         reservation.save()
         return reservation
 
@@ -112,7 +113,7 @@ class Reservation(Model):
     @classmethod
     def cleanup_old_reservations(cls):
         now = datetime.now()
-        query = cls.update(is_closed=True).where(cls.date_time < now)
+        query = cls.update(is_closed=True).where(cls.date < now)
         query.execute()
 
 
