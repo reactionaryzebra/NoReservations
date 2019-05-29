@@ -93,9 +93,11 @@ for restaurant in restaurants:
     data = requests.get('https://api.yelp.com/v3/businesses/search?term={term}&location=Los Angeles&limit=1'.format(
         term=restaurant['name']), headers={"Authorization": "Bearer {}".format(config.YELP_KEY)})
     parsed_data = data.json()
-    restaurant['image_url'] = parsed_data['businesses'][0]['image_url']
-    restaurant['address'] = parsed_data['businesses'][0]['location']['display_address']
-    restaurant['phone'] = parsed_data['businesses'][0]['display_phone']
-    restaurant['cuisine'] = parsed_data['businesses'][0]['categories'][0]['title']
+    yelp_restaurant = parsed_data['businesses'][0]
+    restaurant['image_url'] = yelp_restaurant['image_url']
+    restaurant['address'] = "{address}\n{city}, {state} {zipcode}".format(
+        address=yelp_restaurant['location']['address1'], city=yelp_restaurant['location']['city'], state=yelp_restaurant['location']['state'], zipcode=yelp_restaurant['location']['zip_code'])
+    restaurant['phone'] = yelp_restaurant['display_phone']
+    restaurant['cuisine'] = yelp_restaurant['categories'][0]['title']
 
 models.Restaurant.insert_many(restaurants).execute()
