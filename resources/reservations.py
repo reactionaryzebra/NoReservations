@@ -92,12 +92,11 @@ class Reservation_List(Resource):
                 })
             else:
                 return [marshal(reservation, reservation_fields) for reservation in reservations]
-        elif args['user_id']
-         print(args['user_id'])
-          reservations = models.Reservation.select().where(
-               (models.Reservation.seller_id ==
+        elif args['user_id']:
+            reservations = models.Reservation.select().where(
+                (models.Reservation.seller_id ==
                  args['user_id']) | (models.Reservation.current_owner_id == args['user_id']))
-           if len(reservations) == 0:
+            if len(reservations) == 0:
                 return jsonify({"message": "This user has no reservations"})
             else:
                 return [marshal(reservation, reservation_fields) for reservation in reservations]
