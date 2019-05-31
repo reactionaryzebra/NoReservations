@@ -129,6 +129,11 @@ class Single_Reservation(Resource):
             location=['form', 'json']
         )
         self.reqparse.add_argument(
+            'current_owner_id',
+            required=False,
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
             'price',
             required=False,
             location=['form', 'json']
