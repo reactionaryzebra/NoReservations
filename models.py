@@ -3,12 +3,10 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
 import config
+import os
+from playhouse.db_url import connect
 
-DATABASE = PostgresqlDatabase(
-    'noreservations_dev',
-    user='jrez',
-    password=config.DB_PASSWORD
-)
+DATABASE = connect(os.environ.get('DATABASE_URL'))
 
 
 class User(UserMixin, Model):

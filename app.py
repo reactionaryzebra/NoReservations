@@ -55,6 +55,9 @@ def after_request(response):
 def index():
     return 'hello world'
 
+if 'ON_HEROKU' in os.environ:
+    print('hitting ')
+    models.initialize()
 
 if __name__ == '__main__':
     models.initialize()
