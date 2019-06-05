@@ -2,7 +2,6 @@ from peewee import *
 from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
-import config
 import os
 from playhouse.db_url import connect
 
