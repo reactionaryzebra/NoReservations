@@ -96,7 +96,7 @@ def seed_restaurants():
         data = requests.get('https://api.yelp.com/v3/businesses/search?term={term}&location=Los Angeles&limit=1'.format(
             term=restaurant['name']), headers={"Authorization": "Bearer {}".format(API_KEY)})
         parsed_data = data.json()
-        yelp_restaurant = parsed_data['businesshes'][0]
+        yelp_restaurant = parsed_data['businesses'][0]
         restaurant['image_url'] = yelp_restaurant['image_url']
         restaurant['address'] = "{address}\n{city}, {state} {zipcode}".format(
             address=yelp_restaurant['location']['address1'], city=yelp_restaurant['location']['city'], state=yelp_restaurant['location']['state'], zipcode=yelp_restaurant['location']['zip_code'])
