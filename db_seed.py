@@ -1,7 +1,9 @@
 import requests
-import config
+import os
 from peewee import *
 import models
+
+API_KEY = os.environ.get('YELP_KEY')
 
 def seed_restaurants():
     restaurants = [{
@@ -92,7 +94,7 @@ def seed_restaurants():
 
     for restaurant in restaurants:
         data = requests.get('https://api.yelp.com/v3/businesses/search?term={term}&location=Los Angeles&limit=1'.format(
-            term=restaurant['name']), headers={"Authorization": "Bearer {}".format(config.YELP_KEY)})
+            term=restaurant['name']), headers={"Authorization": "Bearer {}".format(API_KEY)})
         parsed_data = data.json()
         yelp_restaurant = parsed_data['businesshes'][0]
         restaurant['image_url'] = yelp_restaurant['image_url']
