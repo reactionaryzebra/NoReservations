@@ -103,4 +103,4 @@ def seed_restaurants():
         restaurant['phone'] = yelp_restaurant['display_phone']
         restaurant['cuisine'] = yelp_restaurant['categories'][0]['title']
 
-    models.Restaurant.replace_many(restaurants).execute()
+    models.Restaurant.insert_many(restaurants).execute()
