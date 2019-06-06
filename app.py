@@ -4,6 +4,7 @@ from flask_cors import CORS
 from resources.users import users_api
 from resources.restaurants import restaurants_api
 from resources.reservations import reservations_api
+import os
 import models
 
 login_manager = LoginManager()
