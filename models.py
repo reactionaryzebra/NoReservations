@@ -4,6 +4,7 @@ from flask_login import UserMixin
 from datetime import datetime
 import os
 from playhouse.db_url import connect
+from db_seed import seed_restaurants
 
 DATABASE = connect(os.environ.get('DATABASE_URL'))
 
@@ -117,4 +118,5 @@ class Reservation(Model):
 def initialize():
     DATABASE.connect()
     DATABASE.create_tables([User, Restaurant, Reservation], safe=True)
+    seed_restaurants()
     DATABASE.close()
