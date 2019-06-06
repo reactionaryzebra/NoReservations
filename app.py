@@ -4,16 +4,11 @@ from flask_cors import CORS
 from resources.users import users_api
 from resources.restaurants import restaurants_api
 from resources.reservations import reservations_api
-import config
 import models
 
 login_manager = LoginManager()
 
-port = config.PORT
-debug = config.DEBUG
-
 app = Flask(__name__)
-app.secret_key = config.SECRET_KEY
 
 login_manager.init_app(app)
 
